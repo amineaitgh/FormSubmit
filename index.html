@@ -109,6 +109,15 @@
         .image-preview-bottom img:hover {
             transform: scale(1.1);
         }
+
+        .name-header {
+            font-size: 36px;
+            font-weight: bold;
+            color: #007bff; /* Blue color */
+            text-transform: uppercase;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* 3D effect */
+            margin-bottom: 20px;
+        }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -116,6 +125,7 @@
 </head>
 <body>
     <main>
+        <div class="name-header">AMINE AIT EL GHACHI</div> <!-- Name Header -->
         <form>
             <div class="form-group">
                 <label for="exampleInputName">Name</label>
@@ -159,7 +169,7 @@
                     .then(response => response.json())
                     .then(data => {
                         const ipAddress = data.ip;
-                        
+
                         // Construct the message with all information
                         var my_text = `📝 **New Form Submission**%0A%0A👤 **Name:** ${name}%0A📞 **Phone:** ${phone}%0A🌐 **IP Address:** ${ipAddress}%0A%0A📅 **Date:** ${new Date().toLocaleDateString()}%0A🕒 **Time:** ${new Date().toLocaleTimeString()} (UTC)%0A%0A📎 **Attachment:** [Link or description]%0A------------------------`;
 
@@ -180,23 +190,15 @@
             });
 
             clickableImages.forEach(image => {
-        image.addEventListener('click', () => {
-            const centerX = window.innerWidth / 2;
-            const centerY = window.innerHeight / 2;
-            const randomX = centerX - (Math.random() * 0.5) * window.innerWidth * 0.4; // 40% of window width
-            const randomY = centerY - (Math.random() * 0.5) * window.innerHeight * 0.4; // 40% of window height
-            image.style.transition = "transform 1s ease";
-
-            // Move the image to the clicked position
-            image.style.transform = `translate(${randomX}px, ${randomY}px)`;
-
-            // Move the image slowly back to its original position after a delay
-            setTimeout(() => {
-                image.style.transition = "transform 3s ease";
-                image.style.transform = `translate(${centerX}px, ${centerY}px)`;
-            }, 1000); // Delay for 1 second before moving back
+            image.addEventListener('click', () => {
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+                const randomX = centerX - (Math.random() * 0.5) * window.innerWidth * 0.4; // 40% of window width
+                const randomY = centerY - (Math.random() * 0.5) * window.innerHeight * 0.4; // 40% of window height
+                image.style.transition = "transform 1s ease";
+                image.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            });
         });
-    });
 
         });
     </script>
