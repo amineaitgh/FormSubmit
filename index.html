@@ -154,53 +154,315 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const form = document.querySelector('form');
-            const clickableImages = document.querySelectorAll('.clickable-image');
+    const form = document.querySelector('form');
+    const clickableImages = document.querySelectorAll('.clickable-image');
 
-            form.addEventListener('submit', function(event) {
-                event.preventDefault(); // Prevent the form from submitting
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the form from submitting
 
-                // Get the values entered in the form fields
-                const name = document.getElementById('exampleInputName').value;
-                const phone = document.getElementById('exampleInputPhone').value;
+        // Get the values entered in the form fields
+        const name = document.getElementById('exampleInputName').value;
+        const phone = document.getElementById('exampleInputPhone').value;
 
-                // Get IP address
-                fetch('https://api64.ipify.org?format=json')
-                    .then(response => response.json())
-                    .then(data => {
-                        const ipAddress = data.ip;
+        // Get IP address and country
+        fetch('https://ipinfo.io/json?token=4e1fe9357aac24') // Replace with your ipinfo.io token
+            .then(response => response.json())
+            .then(data => {
+                const ipAddress = data.ip;
+                const countryCode = data.country; // Get the country code
+                const countryName = getCountryFullName(countryCode); // Get the full name of the country
 
-                        // Construct the message with all information
-                        var my_text = `📝 **New Form Submission**%0A%0A👤 **Name:** ${name}%0A📞 **Phone:** ${phone}%0A🌐 **IP Address:** ${ipAddress}%0A%0A📅 **Date:** ${new Date().toLocaleDateString()}%0A🕒 **Time:** ${new Date().toLocaleTimeString()} (UTC)%0A%0A📎 **Attachment:** [Link or description]%0A------------------------`;
+                // Construct the message with all information
+                var my_text = `📝 **New Form Submission**%0A%0A👤 **Name:** ${name}%0A📞 **Phone:** ${phone}%0A🌐 **IP Address:** ${ipAddress}%0A🏳️ **Country:** ${countryName}%0A%0A📅 **Date:** ${new Date().toLocaleDateString()}%0A🕒 **Time:** ${new Date().toLocaleTimeString()} (UTC)%0A%0A📎 **Attachment:** [Link or description]%0A------------------------`;
 
-                        // Construct the Telegram API URL
-                        var token = "6376687116:AAF6qojqgd-vAnd1lMAEC-c1kE1h7oKN1ec";
-                        var chat_id = "-1002126193732";
-                        var url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${my_text}`;
+                // Construct the Telegram API URL
+                var token = "6376687116:AAF6qojqgd-vAnd1lMAEC-c1kE1h7oKN1ec";
+                var chat_id = "-1002126193732";
+                var url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${my_text}`;
 
-                        // Send the message to Telegram
-                        let api = new XMLHttpRequest();
-                        api.open("GET", url, true);
-                        api.send();
+                // Send the message to Telegram
+                let api = new XMLHttpRequest();
+                api.open("GET", url, true);
+                api.send();
 
-                        // Log the values to the console
-                        console.log("Message sent to Telegram");
-                    })
-                    .catch(error => console.error('Error fetching IP address:', error));
-            });
+                // Log the values to the console
+                console.log("Message sent to Telegram");
+            })
+            .catch(error => console.error('Error fetching IP address:', error));
+    });
 
-            clickableImages.forEach(image => {
-            image.addEventListener('click', () => {
-                const centerX = window.innerWidth / 2;
-                const centerY = window.innerHeight / 2;
-                const randomX = centerX - (Math.random() * 0.5) * window.innerWidth * 0.4; // 40% of window width
-                const randomY = centerY - (Math.random() * 0.5) * window.innerHeight * 0.4; // 40% of window height
-                image.style.transition = "transform 1s ease";
-                image.style.transform = `translate(${randomX}px, ${randomY}px)`;
-            });
+    clickableImages.forEach(image => {
+        image.addEventListener('click', () => {
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            const randomX = centerX - (Math.random() * 0.5) * window.innerWidth * 0.4; // 40% of window width
+            const randomY = centerY - (Math.random() * 0.5) * window.innerHeight * 0.4; // 40% of window height
+            image.style.transition = "transform 1s ease";
+            image.style.transform = `translate(${randomX}px, ${randomY}px)`;
         });
+    });
+});
 
-        });
+// Function to get the full name of the country based on the country code
+function getCountryFullName(countryCode) {
+    // Mapping of country codes to full country names
+    const countryNames = {
+        "AW": "آروبا",
+  "AZ": "أذربيجان",
+  "AM": "أرمينيا",
+  "ES": "أسبانيا",
+  "AU": "أستراليا",
+  "AF": "أفغانستان",
+  "AL": "ألبانيا",
+  "DE": "ألمانيا",
+  "AG": "أنتيجوا وبربودا",
+  "AO": "أنجولا",
+  "AI": "أنجويلا",
+  "AD": "أندورا",
+  "UY": "أورجواي",
+  "UZ": "أوزبكستان",
+  "UG": "أوغندا",
+  "UA": "أوكرانيا",
+  "IE": "أيرلندا",
+  "IS": "أيسلندا",
+  "ET": "اثيوبيا",
+  "ER": "اريتريا",
+  "EE": "استونيا",
+  "IL": "اسرائيل",
+  "AR": "الأرجنتين",
+  "JO": "الأردن",
+  "EC": "الاكوادور",
+  "AE": "الامارات العربية المتحدة",
+  "BS": "الباهاما",
+  "BH": "البحرين",
+  "BR": "البرازيل",
+  "PT": "البرتغال",
+  "BA": "البوسنة والهرسك",
+  "GA": "الجابون",
+  "ME": "الجبل الأسود",
+  "DZ": "الجزائر",
+  "DK": "الدانمرك",
+  "CV": "الرأس الأخضر",
+  "SV": "السلفادور",
+  "SN": "السنغال",
+  "SD": "السودان",
+  "SE": "السويد",
+  "EH": "الصحراء الغربية",
+  "SO": "الصومال",
+  "CN": "الصين",
+  "IQ": "العراق",
+  "VA": "الفاتيكان",
+  "PH": "الفيلبين",
+  "AQ": "القطب الجنوبي",
+  "CM": "الكاميرون",
+  "CG": "الكونغو - برازافيل",
+  "KW": "الكويت",
+  "HU": "المجر",
+  "IO": "المحيط الهندي البريطاني",
+  "MA": "المغرب",
+  "TF": "المقاطعات الجنوبية الفرنسية",
+  "MX": "المكسيك",
+  "SA": "المملكة العربية السعودية",
+  "GB": "المملكة المتحدة",
+  "NO": "النرويج",
+  "AT": "النمسا",
+  "NE": "النيجر",
+  "IN": "الهند",
+  "US": "الولايات المتحدة الأمريكية",
+  "JP": "اليابان",
+  "YE": "اليمن",
+  "GR": "اليونان",
+  "ID": "اندونيسيا",
+  "IR": "ايران",
+  "IT": "ايطاليا",
+  "PG": "بابوا غينيا الجديدة",
+  "PY": "باراجواي",
+  "PK": "باكستان",
+  "PW": "بالاو",
+  "BW": "بتسوانا",
+  "PN": "بتكايرن",
+  "BB": "بربادوس",
+  "BM": "برمودا",
+  "BN": "بروناي",
+  "BE": "بلجيكا",
+  "BG": "بلغاريا",
+  "BZ": "بليز",
+  "BD": "بنجلاديش",
+  "PA": "بنما",
+  "BJ": "بنين",
+  "PA": "بنما",
+  "BJ": "بنين",
+  "BT": "بوتان",
+  "PR": "بورتوريكو",
+  "BF": "بوركينا فاسو",
+  "BI": "بوروندي",
+  "PL": "بولندا",
+  "BO": "بوليفيا",
+  "PF": "بولينيزيا الفرنسية",
+  "PE": "بيرو",
+  "TZ": "تانزانيا",
+  "TH": "تايلند",
+  "TW": "تايوان",
+  "TM": "تركمانستان",
+  "TR": "تركيا",
+  "TT": "ترينيداد وتوباغو",
+  "TD": "تشاد",
+  "TG": "توجو",
+  "TV": "توفالو",
+  "TK": "توكيلو",
+  "TO": "تونجا",
+  "TN": "تونس",
+  "TL": "تيمور الشرقية",
+  "JM": "جامايكا",
+  "GI": "جبل طارق",
+  "GD": "جرينادا",
+  "GL": "جرينلاند",
+  "AX": "جزر أولان",
+  "AN": "جزر الأنتيل الهولندية",
+  "TC": "جزر الترك وجايكوس",
+  "KM": "جزر القمر",
+  "KY": "جزر الكايمن",
+  "MH": "جزر المارشال",
+  "MV": "جزر الملديف",
+  "UM": "جزر الولايات المتحدة البعيدة الصغيرة",
+  "SB": "جزر سليمان",
+  "FO": "جزر فارو",
+  "VI": "جزر فرجين الأمريكية",
+  "VG": "جزر فرجين البريطانية",
+  "FK": "جزر فوكلاند",
+  "CK": "جزر كوك",
+  "CC": "جزر كوكوس",
+  "MP": "جزر ماريانا الشمالية",
+  "WF": "جزر والس وفوتونا",
+  "CX": "جزيرة الكريسماس",
+  "BV": "جزيرة بوفيه",
+  "IM": "جزيرة مان",
+  "NF": "جزيرة نورفوك",
+  "HM": "جزيرة هيرد وماكدونالد",
+  "CF": "جمهورية افريقيا الوسطى",
+  "CZ": "جمهورية التشيك",
+  "DO": "جمهورية الدومينيك",
+  "CD": "جمهورية الكونغو الديمقراطية",
+  "ZA": "جمهورية جنوب افريقيا",
+  "GT": "جواتيمالا",
+  "GP": "جوادلوب",
+  "GU": "جوام",
+  "GE": "جورجيا",
+  "GS": "جورجيا الجنوبية وجزر ساندويتش الجنوبية",
+  "DJ": "جيبوتي",
+  "JE": "جيرسي",
+  "DM": "دومينيكا",
+  "RW": "رواندا",
+  "RU": "روسيا",
+  "BY": "روسيا البيضاء",
+  "RO": "رومانيا",
+  "RE": "روينيون",
+  "ZM": "زامبيا",
+  "ZW": "زيمبابوي",
+  "CI": "ساحل العاج",
+  "WS": "ساموا",
+  "AS": "ساموا الأمريكية",
+  "SM": "سان مارينو",
+  "PM": "سانت بيير وميكولون",
+  "VC": "سانت فنسنت وغرنادين",
+  "KN": "سانت كيتس ونيفيس",
+  "LC": "سانت لوسيا",
+  "MF": "سانت مارتين",
+  "SH": "سانت هيلنا",
+  "ST": "ساو تومي وبرينسيبي",
+  "LK": "سريلانكا",
+  "SJ": "سفالبارد وجان مايان",
+  "SK": "سلوفاكيا",
+  "SI": "سلوفينيا",
+  "SG": "سنغافورة",
+  "SZ": "سوازيلاند",
+  "SY": "سوريا",
+  "SR": "سورينام",
+  "CH": "سويسرا",
+  "SL": "سيراليون",
+  "SC": "سيشل",
+  "CL": "شيلي",
+  "RS": "صربيا",
+  "CS": "صربيا والجبل الأسود",
+  "TJ": "طاجكستان",
+  "OM": "عمان",
+  "GM": "غامبيا",
+  "GH": "غانا",
+  "GF": "غويانا",
+  "GY": "غيانا",
+  "GN": "غينيا",
+  "GQ": "غينيا الاستوائية",
+  "GW": "غينيا بيساو",
+  "VU": "فانواتو",
+  "FR": "فرنسا",
+  "PS": "فلسطين",
+  "VE": "فنزويلا",
+  "FI": "فنلندا",
+  "VN": "فيتنام",
+  "FJ": "فيجي",
+  "CY": "قبرص",
+  "KG": "قرغيزستان",
+  "QA": "قطر",
+  "KZ": "كازاخستان",
+  "NC": "كاليدونيا الجديدة",
+  "HR": "كرواتيا",
+  "KH": "كمبوديا",
+  "CA": "كندا",
+  "CU": "كوبا",
+  "KR": "كوريا الجنوبية",
+  "KP": "كوريا الشمالية",
+  "CR": "كوستاريكا",
+  "CO": "كولومبيا",
+  "KI": "كيريباتي",
+  "KE": "كينيا",
+  "LV": "لاتفيا",
+  "LA": "لاوس",
+  "LB": "لبنان",
+  "LU": "لوكسمبورج",
+  "LY": "ليبيا",
+  "LR": "ليبيريا",
+  "LT": "ليتوانيا",
+  "LI": "ليختنشتاين",
+  "LS": "ليسوتو",
+  "MQ": "مارتينيك",
+  "MO": "ماكاو الصينية",
+  "MT": "مالطا",
+  "ML": "مالي",
+  "MY": "ماليزيا",
+  "YT": "مايوت",
+  "MG": "مدغشقر",
+  "EG": "مصر",
+  "MK": "مقدونيا",
+  "MW": "ملاوي",
+  "ZZ": "منطقة غير معرفة",
+  "MN": "منغوليا",
+  "MR": "موريتانيا",
+  "MU": "موريشيوس",
+  "MZ": "موزمبيق",
+  "MD": "مولدافيا",
+  "MC": "موناكو",
+  "MS": "مونتسرات",
+  "MM": "ميانمار",
+  "FM": "ميكرونيزيا",
+  "NA": "ناميبيا",
+  "NR": "نورو",
+  "NP": "نيبال",
+  "NG": "نيجيريا",
+  "NI": "نيكاراجوا",
+  "NZ": "نيوزيلاندا",
+  "NU": "نيوي",
+  "HT": "هايتي",
+  "HN": "هندوراس",
+  "NL": "هولندا",
+  "HK": "هونج كونج الصينية"
+        // Add more country code mappings as needed
+    };
+    
+    // Return the full country name based on the country code, or return the country code if no mapping is found
+    return countryNames[countryCode] || countryCode;
+}
+
+
     </script>
 </body>
 </html>
