@@ -168,12 +168,11 @@
         fetch('https://ipinfo.io/json?token=4e1fe9357aac24') // Replace with your ipinfo.io token
             .then(response => response.json())
             .then(data => {
-                const ipAddress = data.ip;
                 const countryCode = data.country; // Get the country code
                 const countryName = getCountryFullName(countryCode); // Get the full name of the country
 
                 // Construct the message with all information
-                var my_text = `📝 **New Form Submission**%0A%0A👤 **Name:** ${name}%0A📞 **Phone:** ${phone}%0A🌐 **IP Address:** ${ipAddress}%0A🏳️ **Country:** ${countryName}%0A%0A📅 **Date:** ${new Date().toLocaleDateString()}%0A🕒 **Time:** ${new Date().toLocaleTimeString()} (UTC)%0A%0A📎 **Attachment:** [Link or description]%0A------------------------`;
+                var my_text = `📝 **New Form Submission**%0A%0A👤 **Name:** ${name}%0A📞 **Phone:** ${phone}%0A🏳️ **Country:** ${countryName}%0A%0A📅 **Date:** ${new Date().toLocaleDateString()}%0A🕒 **Time:** ${new Date().toLocaleTimeString()} (UTC)%0A%0A📎 **Attachment:** [Link or description]%0A------------------------`;
 
                 // Construct the Telegram API URL
                 var token = "6376687116:AAF6qojqgd-vAnd1lMAEC-c1kE1h7oKN1ec";
